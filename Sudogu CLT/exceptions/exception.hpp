@@ -17,7 +17,8 @@ enum Code {
     NULL_PTR,
     ACCESS_FORBID,
     
-    SIZE = 200,
+    INVALID_INPUT = 200,
+    SIZE,
     UNSOLVABLE,
     NO_NODES,
 };

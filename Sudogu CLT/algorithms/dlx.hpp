@@ -16,9 +16,10 @@ typedef std::vector<std::vector<bool>> Matrix;
 class Constraint {
 public:
     const int size; // size of the exact cover
-    Matrix matrix; // two dimensional array containing the sparse constraint matrix
+    Matrix matrix{ }; // two dimensional array containing the sparse constraint matrix
     
     Constraint(int size, int mandatory, int optional, int options, int sets);
+    Constraint(const Constraint& constraint): size(constraint.size), mandatory(constraint.mandatory), optional(constraint.optional), options(constraint.options), sets(constraint.sets) { };
 protected:
     const int mandatory; // maximum allowed mandatory constraints
     const int optional; // maximum allowed optional constraints
@@ -27,16 +28,16 @@ public:
     const int sets; // number of constraints sets for the sparse matrix
 };
 
+struct ID {
+    int value;
+    int row;
+    int column;
+    
+    ID(int value, int row, int column);
+};
+
 class Store {
 protected:
-    struct ID {
-        int value;
-        int row;
-        int column;
-        
-        ID(int value, int row, int column);
-    };
-    
     struct Node {
         Node* left;
         Node* right;

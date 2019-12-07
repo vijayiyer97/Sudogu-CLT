@@ -22,7 +22,8 @@ Exception::Exception(Code type) {
         case OVERRIDE: message = "Program must override virtual function."; break;
         case NULL_PTR: message = "Null pointer error encountered."; break;
         case ACCESS_FORBID: message = "Undefined member access forbidden"; break;
-            
+        
+        case INVALID_INPUT: message = "Invalid array input."; break;
         case SIZE: message = "Invalid sudoku size input."; break;
         case UNSOLVABLE: message = "Sudoku cannot be solved."; break;
         case NO_NODES: message = "Toroidal matrix has no nodes"; break;

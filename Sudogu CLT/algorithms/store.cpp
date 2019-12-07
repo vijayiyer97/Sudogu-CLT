@@ -10,7 +10,7 @@
 #include "dlx.hpp"
 #include "exception.hpp"
 
-Store::ID::ID(int val, int r, int c) {
+ID::ID(int val, int r, int c) {
     value = val;
     row = r;
     column = c;
@@ -40,7 +40,7 @@ Store::Node::~Node() {
     
 }
 
-Store::ID Store::Node::getID() {
+ID Store::Node::getID() {
     if (member == 0) {
         return id;
     }
