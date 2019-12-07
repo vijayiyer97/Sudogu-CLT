@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		B127C8DE239984CE00C54B29 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B127C8DD239984CE00C54B29 /* main.cpp */; };
+		B1F6E5CA239986E20050A229 /* dlx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1F6E5C8239986E20050A229 /* dlx.cpp */; };
+		B1F6E5CC2399BB3D0050A229 /* store.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1F6E5CB2399BB3D0050A229 /* store.cpp */; };
+		B1F6E5CF2399BF990050A229 /* exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1F6E5CD2399BF990050A229 /* exception.cpp */; };
+		B1F6E5D2239B399F0050A229 /* sudoku.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1F6E5D0239B399F0050A229 /* sudoku.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,13 @@
 /* Begin PBXFileReference section */
 		B127C8DA239984CE00C54B29 /* Sudogu CLT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sudogu CLT"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B127C8DD239984CE00C54B29 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B1F6E5C8239986E20050A229 /* dlx.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dlx.cpp; sourceTree = "<group>"; };
+		B1F6E5C9239986E20050A229 /* dlx.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dlx.hpp; sourceTree = "<group>"; };
+		B1F6E5CB2399BB3D0050A229 /* store.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = store.cpp; sourceTree = "<group>"; };
+		B1F6E5CD2399BF990050A229 /* exception.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = exception.cpp; sourceTree = "<group>"; };
+		B1F6E5CE2399BF990050A229 /* exception.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = exception.hpp; sourceTree = "<group>"; };
+		B1F6E5D0239B399F0050A229 /* sudoku.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sudoku.cpp; sourceTree = "<group>"; };
+		B1F6E5D1239B399F0050A229 /* sudoku.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sudoku.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,8 +69,39 @@
 			isa = PBXGroup;
 			children = (
 				B127C8DD239984CE00C54B29 /* main.cpp */,
+				B1F6E5C7239985C10050A229 /* models */,
+				B1F6E5C6239985AF0050A229 /* algorithms */,
+				B1F6E5C5239985940050A229 /* exceptions */,
 			);
 			path = "Sudogu CLT";
+			sourceTree = "<group>";
+		};
+		B1F6E5C5239985940050A229 /* exceptions */ = {
+			isa = PBXGroup;
+			children = (
+				B1F6E5CD2399BF990050A229 /* exception.cpp */,
+				B1F6E5CE2399BF990050A229 /* exception.hpp */,
+			);
+			path = exceptions;
+			sourceTree = "<group>";
+		};
+		B1F6E5C6239985AF0050A229 /* algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				B1F6E5C8239986E20050A229 /* dlx.cpp */,
+				B1F6E5CB2399BB3D0050A229 /* store.cpp */,
+				B1F6E5C9239986E20050A229 /* dlx.hpp */,
+			);
+			path = algorithms;
+			sourceTree = "<group>";
+		};
+		B1F6E5C7239985C10050A229 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				B1F6E5D0239B399F0050A229 /* sudoku.cpp */,
+				B1F6E5D1239B399F0050A229 /* sudoku.hpp */,
+			);
+			path = models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +161,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1F6E5CA239986E20050A229 /* dlx.cpp in Sources */,
+				B1F6E5CF2399BF990050A229 /* exception.cpp in Sources */,
+				B1F6E5CC2399BB3D0050A229 /* store.cpp in Sources */,
+				B1F6E5D2239B399F0050A229 /* sudoku.cpp in Sources */,
 				B127C8DE239984CE00C54B29 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
