@@ -8,8 +8,48 @@
 
 #include <iostream>
 
+#include "solver.hpp"
+#include "exception.hpp"
+
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    std::cout << "!!!Hello World!!!" << std::endl; // prints !!!Hello World!!!
+    int array[9][9] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {9, 1, 0, 0, 0, 7, 0, 0, 2},
+        {0, 0, 0, 8, 0, 2, 5, 7, 0},
+        
+        {0, 8, 3, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 3, 0, 4, 0, 2, 6},
+        {0, 0, 5, 0, 0, 0, 0, 1, 0},
+        
+        {7, 0, 0, 0, 0, 0, 4, 0, 0},
+        {0, 6, 0, 9, 0, 0, 0, 5, 0},
+        {0, 0, 0, 6, 0, 0, 0, 0, 3}
+    };
+    int iSize = sizeof(array) / sizeof(array[0]);
+    int jSize = sizeof(array[0]) / sizeof(int);
+    int** values;
+    values = new int* [iSize];
+    for (int i = 0; i < iSize; i++) {
+        values[i] = new int [jSize];
+    }
+    for (int i = 0; i < iSize; i++) {
+        for (int j = 0; j < jSize; j++) {
+            values[i][j] = array[i][j];
+        }
+    }
+    
+    try {
+        Sudoku sudoku{ values };
+        
+        std::cout << sudoku << std::endl;
+        
+        Solver solver{ sudoku };
+        Result result = solver.search();
+        
+        std::cout << result.solutions[0] << std::endl;
+        
+    } catch (Exception except) { }
+    
     return 0;
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B127C8DE239984CE00C54B29 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B127C8DD239984CE00C54B29 /* main.cpp */; };
 		B1A13901239B794E00B7C757 /* constraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1A13900239B794E00B7C757 /* constraint.cpp */; };
+		B1A13904239BE85E00B7C757 /* solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1A13902239BE85E00B7C757 /* solver.cpp */; };
 		B1F6E5CA239986E20050A229 /* dlx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1F6E5C8239986E20050A229 /* dlx.cpp */; };
 		B1F6E5CC2399BB3D0050A229 /* store.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1F6E5CB2399BB3D0050A229 /* store.cpp */; };
 		B1F6E5CF2399BF990050A229 /* exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1F6E5CD2399BF990050A229 /* exception.cpp */; };
@@ -31,6 +32,8 @@
 		B127C8DA239984CE00C54B29 /* Sudogu CLT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sudogu CLT"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B127C8DD239984CE00C54B29 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B1A13900239B794E00B7C757 /* constraint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = constraint.cpp; sourceTree = "<group>"; };
+		B1A13902239BE85E00B7C757 /* solver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = solver.cpp; sourceTree = "<group>"; };
+		B1A13903239BE85E00B7C757 /* solver.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = solver.hpp; sourceTree = "<group>"; };
 		B1F6E5C8239986E20050A229 /* dlx.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dlx.cpp; sourceTree = "<group>"; };
 		B1F6E5C9239986E20050A229 /* dlx.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dlx.hpp; sourceTree = "<group>"; };
 		B1F6E5CB2399BB3D0050A229 /* store.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = store.cpp; sourceTree = "<group>"; };
@@ -90,9 +93,9 @@
 		B1F6E5C6239985AF0050A229 /* algorithms */ = {
 			isa = PBXGroup;
 			children = (
+				B1A13900239B794E00B7C757 /* constraint.cpp */,
 				B1F6E5C8239986E20050A229 /* dlx.cpp */,
 				B1F6E5CB2399BB3D0050A229 /* store.cpp */,
-				B1A13900239B794E00B7C757 /* constraint.cpp */,
 				B1F6E5C9239986E20050A229 /* dlx.hpp */,
 			);
 			path = algorithms;
@@ -101,7 +104,9 @@
 		B1F6E5C7239985C10050A229 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				B1A13902239BE85E00B7C757 /* solver.cpp */,
 				B1F6E5D0239B399F0050A229 /* sudoku.cpp */,
+				B1A13903239BE85E00B7C757 /* solver.hpp */,
 				B1F6E5D1239B399F0050A229 /* sudoku.hpp */,
 			);
 			path = models;
@@ -170,6 +175,7 @@
 				B1F6E5CC2399BB3D0050A229 /* store.cpp in Sources */,
 				B1F6E5D2239B399F0050A229 /* sudoku.cpp in Sources */,
 				B127C8DE239984CE00C54B29 /* main.cpp in Sources */,
+				B1A13904239BE85E00B7C757 /* solver.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

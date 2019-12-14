@@ -17,15 +17,13 @@ class Constraint {
 public:
     const int size; // size of the exact cover
     Matrix matrix{ }; // two dimensional array containing the sparse constraint matrix
+    const int mandatory; // maximum allowed mandatory constraints
+    const int optional; // maximum allowed optional constraints
+    const int options; // number of possibilities for the sparse matrix
+    const int sets; // number of constraints sets for the sparse matrix
     
     Constraint(int size, int mandatory, int optional, int options, int sets);
     Constraint(const Constraint& constraint): size(constraint.size), mandatory(constraint.mandatory), optional(constraint.optional), options(constraint.options), sets(constraint.sets) { };
-protected:
-    const int mandatory; // maximum allowed mandatory constraints
-    const int optional; // maximum allowed optional constraints
-public:
-    const int options; // number of possibilities for the sparse matrix
-    const int sets; // number of constraints sets for the sparse matrix
 };
 
 struct ID {
@@ -62,9 +60,15 @@ protected:
         void cover();
         void uncover();
     private:
-        int member;
+        enum Union {
+            NONE = 0,
+            ID,
+            SIZE,
+        };
+        
+        const Union member;
         union {
-            ID id;
+            struct ID id;
             int size;
         };
     };
@@ -72,20 +76,22 @@ protected:
     typedef std::vector<Node*> Nodes;
 };
 
+typedef std::vector<ID> Solution;
+typedef std::vector<Solution> Solutions;
+
 class DLX: public Store {
-public:
-    typedef std::vector<ID> Solution;
 private:
     Node* header;
     std::vector<Node*> nodes{ };
     Solution solution{ };
+    Solutions solutions{ };
     
     Node* selectColumn();
     bool solve();
 public:
-    DLX(Constraint constraint, int size);
+    DLX(Constraint* constraint, int size);
     ~DLX();
-    Solution run();
+    Solutions run();
 };
 
 #endif /* algorithms_dlx_hpp */

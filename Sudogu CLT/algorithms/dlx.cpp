@@ -9,68 +9,73 @@
 #include "dlx.hpp"
 #include "exception.hpp"
 
-DLX::DLX(Constraint constraint, int cells) {
-    const Matrix matrix = constraint.matrix;
-    const int size = constraint.size;
-    const int options = constraint.options;
-    const int sets = constraint.sets;
+DLX::DLX(Constraint* constraint, int cells) {
+    const Matrix matrix = constraint->matrix;
+    const int size = constraint->size;
+    const int options = constraint->options;
+    const int sets = constraint->sets;
     
     header = new Node{ };
-    nodes.push_back(header);
-    Nodes temp_col;
-    Nodes header_col;
-    Node* node = header;
+    header->left = header;
+    header->right = header;
+    header->down = header;
+    header->up = header;
+    header->column = header;
+    
+    Node* temp = header;
     for (int i = 0; i < sets; ++i) {
         auto* col = new Node{ true };
-        nodes.push_back(col);
-        node->right = col;
-        col->left = node;
-        node = col;
-        temp_col.push_back(col);
-        header_col.push_back(col);
+        col->up = col;
+        col->down = col;
+        col->right = header;
+        temp->right = col;
+        col->left = temp;
+        temp = col;
     }
-    node->right = header;
-    header->left = node;
+    temp->right = header;
+    temp->right->left = temp;
+    
     
     ID id { 0, 1, 1 };
     for (int i = 0; i < options; ++i) {
-        Node* temp_row{ nullptr };
-        Node* header_row{ nullptr };
+        Node* top = header->right;
+        Node* prev = NULL;
         
         if (i != 0 && i % size == 0) {
             id.value -= cells - 1;
             id.row++;
             id.column -= cells - 1;
-        } else if (i != 0 && cells == 0) {
+        } else if (i != 0 && i % cells == 0) {
             id.value -= cells - 1;
             id.column++;
         } else {
             id.value++;
         }
         
-        for (int j = 0; j < sets; ++j) {
+        for (int j = 0; j < sets; ++j, top = top->right) {
             if (matrix[i][j]) {
-                auto* node = new Node{ id, header_col[j]};
-                nodes.push_back(node);
-                temp_col[j]->down = node;
-                node->up = temp_col[j];
-                temp_col[j]= node;
-                if (temp_row) {
-                    temp_row->right = node;
-                    node->left = temp_row;
-                    temp_row = node;
-                } else {
-                    temp_row = header_row = node;
+                auto* node = new Node { id, top };
+                if (prev == NULL) {
+                    prev = node;
+                    prev->right = node;
                 }
+                node->left = prev;
+                node->right = prev->right;
+                node->right->left = node;
+                node->left->right = node;
+                
+                node->down = top;
+                node->up = top->up;
+                node->up->down = node;
+                node->down->up = node;
+                
+                if (top->down == top) {
+                    top->down = node;
+                }
+                
+                prev = node;
             }
         }
-        temp_row->right = header_row;
-        header_row->left = temp_row;
-    }
-    
-    for (int i = 0; i < sets; ++i) {
-        temp_col[i]->down = header_col[i];
-        header_col[i]->up = temp_col[i];
     }
 }
 
@@ -88,7 +93,7 @@ Store::Node* DLX::selectColumn() {
         int size = current->getSize();
         
         if (size == 0) {
-            throw Exception(NO_NODES);
+            return header;
         } else if (size == 1) {
             return current;
         } else if (size < min_size) {
@@ -107,35 +112,42 @@ bool DLX::solve() {
         return true;
     }
     
-    try {
-        Node* column = selectColumn();
-        column->cover();
+    Node* column = selectColumn();
+    
+    if (column == header) {
+        return false;
+    }
+    
+    column->cover();
+    
+    for (auto row = column->down; row != column; row = row->down) {
+        solution.push_back(row->getID());
         
-        for (auto row = column->down; row != column; row = row->down) {
-            solution.push_back(row->getID());
-            
-            for (auto right = row->right; right != row; right = right->right) {
-                right->cover();
-            }
-            
-            if (solve()) {
-                return true;
-            }
-            
-            solution.pop_back();
-            
-            for (auto left = row->left; left != row; left = left->left) {
-                left->uncover();
-            }
+        for (auto node = row->right; node != row; node = node->right) {
+            node->cover();
         }
         
-        column->uncover();
-        return false;
+        if (solve()) {
+            solutions.push_back(solution);
+        }
         
-    } catch (Exception except) {
-        switch (except.code) {
-            case NO_NODES: return false;
-            default: throw except;
+        solution.pop_back();
+        
+        for (auto node = row->left; node != row; node = node->left) {
+            node->uncover();
         }
     }
+    
+    column->uncover();
+    return false;
+}
+
+Solutions DLX::run() {
+    solve();
+    
+    if (solutions.size() == 0) {
+        throw Exception(UNSOLVABLE);
+    }
+    
+    return solutions;
 }

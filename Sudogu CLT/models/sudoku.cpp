@@ -30,6 +30,8 @@ Sudoku::Sudoku(int** const arr, int _rows, int _cols, int _cells): Dimensions(_r
             values[i][j] = value;
         }
     }
+    
+    buildSparseMatrix();
 }
 
 Sudoku::Sudoku(const Sudoku& sudoku): Dimensions(sudoku), Constraint(sudoku) {
@@ -39,6 +41,16 @@ Sudoku::Sudoku(const Sudoku& sudoku): Dimensions(sudoku), Constraint(sudoku) {
             values[i][j] = sudoku.values[i][j];
         }
     }
+    
+    matrix = sudoku.matrix;
+}
+
+Sudoku::~Sudoku() {
+    for (int i = 0; i < cells; ++i) {
+        delete[] values[i];
+    }
+    
+    delete[] values;
 }
 
 void Sudoku::initValues() {
@@ -85,7 +97,7 @@ static int getLength(int size) {
     }
 }
 
-std::string Sudoku::stringConvert() {
+std::string Sudoku::convertToString() {
     try {
         int len = getLength(cells);
         std::string divider = "|" + std::string(len, '-') + "|\n";
@@ -93,23 +105,22 @@ std::string Sudoku::stringConvert() {
         for (int i = 0; i < cells; i++) {
             if (i % rows == 0) {
                 str += divider;
-            } else {
-                for (int j = 0; j < cells; j++) {
-                    if (j % columns == 0) {
-                        str += "|";
-                    } else {
-                        str += " ";
-                    }
-                    
-                    int value = values[i][j];
-                    if (value != 0) {
-                        str += std::to_string(value);
-                    } else {
-                        str += "o";
-                    }
-                }
-                str += "|\n";
             }
+            for (int j = 0; j < cells; j++) {
+                if (j % columns == 0) {
+                    str += "|";
+                } else {
+                    str += " ";
+                }
+                
+                int value = values[i][j];
+                if (value != 0) {
+                    str += std::to_string(value);
+                } else {
+                    str += "o";
+                }
+            }
+            str += "|\n";
         }
         
         str += divider;
@@ -122,17 +133,17 @@ std::string Sudoku::stringConvert() {
     }
 }
 
-std::vector<bool> Sudoku::buildMatrixRow(ID id) {
+std::vector<bool> Sudoku::buildMatrixRow(ID id, bool value) {
     std::vector<bool> exact_cover{ };
-    exact_cover.resize(sets);
+    exact_cover.resize(sets, 0);
     int constraint_1 = id.row * cells + id.column;
     int constraint_2 = id.row * cells + (id.value - 1) + size;
     int constraint_3 = id.column * cells + (id.value - 1) + 2 * size;
     int constraint_4 = (id.row - (id.row % rows) + id.column / columns) * cells + (id.value - 1) + 3 * size;
-    exact_cover[constraint_1] = 1;
-    exact_cover[constraint_2] = 1;
-    exact_cover[constraint_3] = 1;
-    exact_cover[constraint_4] = 1;
+    exact_cover[constraint_1] = value;
+    exact_cover[constraint_2] = value;
+    exact_cover[constraint_3] = value;
+    exact_cover[constraint_4] = value;
     
     return exact_cover;
 }
@@ -141,15 +152,10 @@ void Sudoku::buildSparseMatrix() {
     for (int i = 0; i < cells; ++i) {
         for (int j = 0; j < cells; ++j) {
             int value = values[i][j];
-            if (value == 0) {
-                for (int k = 0; k < cells; ++k) {
-                    ID id{ k + 1, i, j };
-                    std::vector<bool> row = buildMatrixRow(id);
-                    matrix.push_back(row);
-                }
-            } else {
-                ID id{ value, i, j };
-                std::vector<bool> row = buildMatrixRow(id);
+            for (int k = 0; k < cells; ++k) {
+                ID id{ k + 1, i, j };
+                bool boolean = value - 1 == k || value == 0;
+                std::vector<bool> row = buildMatrixRow(id, boolean);
                 matrix.push_back(row);
             }
         }
@@ -157,15 +163,11 @@ void Sudoku::buildSparseMatrix() {
 }
 
 
-void Sudoku::setCell(int row, int col, int val) {
-    values[row][col] = val;
-}
-
-int Sudoku::getCell(int row, int col) {
-    return values[row][col];
+void Sudoku::setCell(ID id) {
+    values[id.row - 1][id.column - 1] = id.value;
 }
 
 std::ostream& operator <<(std::ostream& ostream, Sudoku& sudoku) {
-    ostream << sudoku.stringConvert();
+    ostream << sudoku.convertToString();
     return ostream;
 }

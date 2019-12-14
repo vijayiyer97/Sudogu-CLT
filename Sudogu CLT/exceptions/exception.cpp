@@ -22,6 +22,7 @@ Exception::Exception(Code type) {
         case OVERRIDE: message = "Program must override virtual function."; break;
         case NULL_PTR: message = "Null pointer error encountered."; break;
         case ACCESS_FORBID: message = "Undefined member access forbidden"; break;
+        case NOT_EXACT_COVER: message = "Mandatory constraints must be positive"; break;
         
         case INVALID_INPUT: message = "Invalid array input."; break;
         case SIZE: message = "Invalid sudoku size input."; break;

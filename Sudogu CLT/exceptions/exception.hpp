@@ -16,6 +16,7 @@ enum Code {
     OVERRIDE = 100,
     NULL_PTR,
     ACCESS_FORBID,
+    NOT_EXACT_COVER,
     
     INVALID_INPUT = 200,
     SIZE,

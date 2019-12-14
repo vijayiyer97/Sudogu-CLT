@@ -10,27 +10,27 @@
 #include "dlx.hpp"
 #include "exception.hpp"
 
-ID::ID(int val, int r, int c) {
+ID::ID(int val, int r, int col) {
     value = val;
     row = r;
-    column = c;
+    column = col;
 }
 
-Store::Node::Node() {
-    left = right = up = down = column = nullptr;
+Store::Node::Node(): member(NONE) {
+    left = right = up = down = column = this;
     mandatory = false;
 }
 
-Store::Node::Node(bool mand) {
-    left = right = up = down = nullptr;
+Store::Node::Node(bool mand): member(SIZE) {
+    left = right = up = down = this;
     column = this;
     size = 0;
     mandatory = mand;
 }
 
-Store::Node::Node(ID i, Node* col) {
+Store::Node::Node(struct ID identity, Node* col): member(ID) {
     left = right = up = down = nullptr;
-    id = i;
+    id = identity;
     column = col;
     column->size++;
     mandatory = false;
@@ -41,17 +41,13 @@ Store::Node::~Node() {
 }
 
 ID Store::Node::getID() {
-    if (member == 0) {
-        return id;
-    }
-    throw Exception(ACCESS_FORBID);
+    assert(member == ID);
+    return id;
 }
 
 int Store::Node::getSize() {
-    if (member == 1) {
-        return size;
-    }
-    throw Exception(ACCESS_FORBID);
+    assert(member == SIZE);
+    return size;
 }
 
 void Store::Node::hRemove() {
@@ -87,9 +83,9 @@ void Store::Node::vRestore() {
 void Store::Node::cover() {
     Node* column = this->column;
     column->hRemove();
-    for (auto* row = column->down; row != column; row = row->down) {
-        for (auto right = row->right; right != row; right = right->right) {
-            right->vRemove();
+    for (Node* row = column->down; row != column; row = row->down) {
+        for (Node* node = row->right; node != row; node = node->right) {
+            node->vRemove();
         }
     }
 }
@@ -97,8 +93,8 @@ void Store::Node::cover() {
 void Store::Node::uncover() {
     Node* column = this->column;
     for (auto* row = column->up; row != column; row = row->up) {
-        for (auto left = row->left; left != row; left = left->left) {
-            right->vRestore();
+        for (auto* node = row->left; node != row; node = node->left) {
+            node->vRestore();
         }
     }
     column->hRestore();
