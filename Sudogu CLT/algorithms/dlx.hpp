@@ -87,11 +87,11 @@ private:
     Solutions solutions{ };
     
     Node* selectColumn();
-    bool solve();
+    bool solve(int limit);
 public:
     DLX(Constraint* constraint, int size);
     ~DLX();
-    Solutions run();
+    Solutions run(int limit);
 };
 
 #endif /* algorithms_dlx_hpp */

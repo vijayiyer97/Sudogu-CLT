@@ -19,11 +19,11 @@ Sudoku Solver::convertToSudoku(Solution solution) {
     return solved;
 }
 
-Result Solver::search() {
+Result Solver::search(int limit) {
     Result result{ };
     Constraint* constraint = &sudoku;
     DLX dlx{ constraint, sudoku.cells };
-    Solutions solutions = dlx.run();
+    Solutions solutions = dlx.run(limit);
     for (auto solution: solutions) {
         Sudoku solved{ convertToSudoku(solution) };
         result.solutions.push_back(solved);

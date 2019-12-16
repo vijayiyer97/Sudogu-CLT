@@ -167,6 +167,10 @@ void Sudoku::setCell(ID id) {
     values[id.row - 1][id.column - 1] = id.value;
 }
 
+int Sudoku::getCell(int row, int col) {
+    return values[row][col];
+}
+
 std::ostream& operator <<(std::ostream& ostream, Sudoku& sudoku) {
     ostream << sudoku.convertToString();
     return ostream;

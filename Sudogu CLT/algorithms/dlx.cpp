@@ -107,7 +107,7 @@ Store::Node* DLX::selectColumn() {
     return next;
 }
 
-bool DLX::solve() {
+bool DLX::solve(int limit) {
     if (header->right == header) {
         return true;
     }
@@ -127,7 +127,12 @@ bool DLX::solve() {
             node->cover();
         }
         
-        if (solve()) {
+        if (solve(limit)) {
+            if (solutions.size() == limit - 1) {
+                solutions.push_back(solution);
+                return true;
+            }
+            
             solutions.push_back(solution);
         }
         
@@ -142,8 +147,8 @@ bool DLX::solve() {
     return false;
 }
 
-Solutions DLX::run() {
-    solve();
+Solutions DLX::run(int limit) {
+    solve(limit);
     
     if (solutions.size() == 0) {
         throw Exception(UNSOLVABLE);

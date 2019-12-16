@@ -27,6 +27,6 @@ public:
     Solver(Sudoku sudoku);
     Solver(int** const values, int rows = 3, int columns = 3, int cells = 9);
     
-    Result search();
+    Result search(int limit);
 };
 #endif /* models_solver_hpp */

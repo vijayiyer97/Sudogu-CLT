@@ -38,8 +38,9 @@ public:
     ~Sudoku();
     
     void setCell(ID id);
+    int getCell(int row, int column);
     
-    friend std::ostream& operator <<(std::ostream& ostream, Sudoku& sudoku);
+    friend std::ostream& operator<<(std::ostream& ostream, Sudoku& sudoku);
 };
 
 #endif /* models_sudoku_hpp */
